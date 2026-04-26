@@ -249,3 +249,15 @@ I prefer the first approach. It's cleaner.
 
 **2d.answer**
 I would not use `key={Date.now()}` to force a remount on every render. It would be too costly, recreating the component constantly, instead of when it's really needed.
+
+## Part 3 — Feature Implementation (90 min)
+
+## Part 4 — Refactoring (45 min)
+
+**4a.** You'll notice the file has separate "authenticated" and "guest" versions of several functions (e.g., `getAvailableTherapists` and `guestGetAvailableTherapists`). These differ only in URL prefix and headers. Without implementing it, describe how you would consolidate these pairs into single functions. Show a short code sketch of the approach.
+
+**4b.** A teammate proposes wrapping every API call in a retry with exponential backoff. For which of the functions in this file would that be **safe**, and for which would it be **dangerous**? Name at least 3 specific functions for each category and explain why.
+
+**4c.** The `checkoutBooking` function has a subtle but critical bug beyond the one shared with other functions. Find it and explain what would happen in production.
+
+## Part 5 — Architecture & Opinions (30 min, written only)
