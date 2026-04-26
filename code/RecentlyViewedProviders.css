@@ -1,0 +1,56 @@
+.recently-viewed-providers-container {
+    margin: 16px 0;
+}
+
+.recently-viewed-providers-container .title {
+    font-size: 24px;
+    color: #333;
+}
+
+
+
+.recently-viewed-providers-row {
+    display: flex;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.recently-viewed-providers-row .provider-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    width: 120px;
+    height: 320px;
+    margin: 4px;
+}
+
+.provider-card .provider-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.provider-card .provider-placeholder {
+    color: #333;
+    background-color: tomato;
+}
+
+.provider-card .provider-avatar {
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+
+.provider-card .provider-rating {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.provider-card .provider-rating .star {
+    color: gold;
+    margin-right: 8px;
+}

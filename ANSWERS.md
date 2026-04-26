@@ -252,6 +252,12 @@ I would not use `key={Date.now()}` to force a remount on every render. It would 
 
 ## Part 3 — Feature Implementation (90 min)
 
+**3a.** Where exactly in the existing code would you dispatch the tracking action? Describe the integration point, which file it would be in, and what the calling code would look like. Explain why you chose that specific location over other options.
+
+**3b.** You found a bug in the reducer pattern in Part 1. Did you replicate that pattern in your new reducer or deviate from it? Explain your decision and the trade-off of each choice (matching the team's existing pattern vs. doing it correctly).
+
+**3c.** If this feature later needed to survive page refreshes (persist across sessions), what specific changes would you make? Don't just say "add it to redux-persist" — explain what else you'd need to consider (data shape, storage limits, stale data, etc.).
+
 ## Part 4 — Refactoring (45 min)
 
 **4a.** You'll notice the file has separate "authenticated" and "guest" versions of several functions (e.g., `getAvailableTherapists` and `guestGetAvailableTherapists`). These differ only in URL prefix and headers. Without implementing it, describe how you would consolidate these pairs into single functions. Show a short code sketch of the approach.
