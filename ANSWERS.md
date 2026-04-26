@@ -256,8 +256,32 @@ I would not use `key={Date.now()}` to force a remount on every render. It would 
 
 **4a.** You'll notice the file has separate "authenticated" and "guest" versions of several functions (e.g., `getAvailableTherapists` and `guestGetAvailableTherapists`). These differ only in URL prefix and headers. Without implementing it, describe how you would consolidate these pairs into single functions. Show a short code sketch of the approach.
 
+I would consolidate them into a single function that accepts the different URL as an option and maybe leave them as different functions (or not, would depend on the code) to separate functionality.
+
+For example:
+
+    ```javascript
+        handleGetAvailableTherapists(cartId, cartProductId, dateUtc, csrfToken, callBackFunc, errorHandler, isGuest = {guest: false}) {...} //all the same
+        getAvailableTherapists(cartId, cartProductId, dateUtc, csrfToken, callBackFunc, errorHandler, {guest: false})
+        guestGetAvailableTherapists(cartId, cartProductId, dateUtc, csrfToken, callBackFunc, errorHandler, {guest: true})
+    ```
+
 **4b.** A teammate proposes wrapping every API call in a retry with exponential backoff. For which of the functions in this file would that be **safe**, and for which would it be **dangerous**? Name at least 3 specific functions for each category and explain why.
 
+It dependes, i wouldnt do it in EVERY function, but for the **safe**
+`getCartDetails`
+`getAddressDetails`
+`getAvailableTherapists`
+Becuase GET requests are generally safe and should not create any problem
+
+Now, for the **dangerous**
+`createCart`
+`addCartProduct`
+`useCreditCard`
+Because it may create multiple instances of a cart or payment, or add products the user did not select. Retrying after a timeout or whatever reason could create duplicate items or charges.
+
 **4c.** The `checkoutBooking` function has a subtle but critical bug beyond the one shared with other functions. Find it and explain what would happen in production.
+
+It's the same as what was mentioned in part 1. `checkoutBooking` has the `{withCredentials: true}` sent as body. This could cause the checkout to fail
 
 ## Part 5 — Architecture & Opinions (30 min, written only)
