@@ -254,9 +254,19 @@ I would not use `key={Date.now()}` to force a remount on every render. It would 
 
 **3a.** Where exactly in the existing code would you dispatch the tracking action? Describe the integration point, which file it would be in, and what the calling code would look like. Explain why you chose that specific location over other options.
 
+- I would dispatch `addRecentlyViewedProvider` when the provider profile request succeds, inside the component.
+- I would not dispatch from the API, API helpers should stay responsible for API, not redux side effects.
+- Example would be something like `handleViewedProviderProfile`, on success I'd call `this.props.addRecentlyViewedProvider()` with relevant information, and it would be connected something like this `export default connect(mapStateToProps, {addRecentlyViewedProvider})(ProviderPickStepMarketplace)`
+- I chose this location because it means provider profile was viewed or loaded successfully, not just loaded in a bulk with everything else.
+
 **3b.** You found a bug in the reducer pattern in Part 1. Did you replicate that pattern in your new reducer or deviate from it? Explain your decision and the trade-off of each choice (matching the team's existing pattern vs. doing it correctly).
 
+- I did not replicate it. The previous bug with assign mutates current Redux state object, instead my reducer uses immutable updates. The trade-off is that my approach is different from the legacy style of the rest of the code, but it follows the redux expected behaviour.
+
 **3c.** If this feature later needed to survive page refreshes (persist across sessions), what specific changes would you make? Don't just say "add it to redux-persist" — explain what else you'd need to consider (data shape, storage limits, stale data, etc.).
+
+- First i'd remove it from the persist blacklist (or add it to the whitelist if that approach was implemented)
+- I'd only persist a small part of the provider data, id, name, rating, avatar, what's needed to render the card. I would not worry about storage limits, unless the application was overloaded with stored information.
 
 ## Part 4 — Refactoring (45 min)
 
