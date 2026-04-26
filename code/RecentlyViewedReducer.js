@@ -1,3 +1,18 @@
+// added for context, because i do not have the file
+
+// const rootReducer = combineReducers({
+//   bookingFlow: BookingFlowReducer,
+//   booking: CartReducer,
+//   client: ClientReducer,
+//   recentlyViewedProviders: RecentlyViewedProviders,
+// });
+
+// const persistConfig = {
+//   key: 'root',
+//   blacklist: ['booking', 'chats', 'recentlyViewedProviders'],
+//   stateReconciler: hardSet,
+// };
+
 const LAST_RECENT_PROVIDERS = 5;
 
 const initialState = {

@@ -3,10 +3,13 @@ import React from 'react';
 class RecentlyViewedProviders extends React.Component {
     constructor(props) {
         super(props);
+
+        this.handleProviderClick = this.handleProviderClick.bind(this);
     }
 
     handleProviderClick(provider) {
-        console.log(provider);
+        if (!this.props.onSelectProvider) return;
+        this.props.onSelectProvider(provider);
     }
 
     renderAvatar(provider) {
@@ -55,4 +58,8 @@ class RecentlyViewedProviders extends React.Component {
     }
 }
 
-export default RecentlyViewedProviders;
+const mapStateToProps = (state) => ({
+    providers: state.RecentlyViewedProviders.providers,
+})
+
+export default connect(mapStateToProps)(RecentlyViewedProviders);
