@@ -180,3 +180,72 @@
   - **minor**
 
 ## Part 2 — Bug Investigation (30 min)
+
+**2a.answer**
+
+- relevantGoBack() is called
+- currentStep and rebook is read from redux
+- currentStep is not one of the if/else if options, goes to else by default calling updateBookingStep()
+- bookingFlow.previousStep should point to previous step, should be PICKAPRO or PICKAPRO2
+- updateBookingStep() is called with previous step
+- updates browser history
+- parent component updates because currentStepId changes
+- renderStep() renders again
+- react renders ProviderPickStepMarketplace
+- ProviderPickStepMarketplace did not render while user was on REVIEW, it should mount again when returning to PICKAPRO
+- ProviderPickStepMarketplace componentDidMount() is called
+- if cartId && cartProductId && dateUtc are present it fetches again
+- dispatch for availableTherapists
+- same object is returned for the flow, so redux maybe doesnt detect the state change correctly
+- components depending on availableTherapists may not re-render
+
+For ProviderPickStepMarketplace because availableTherapists object may be the same, redux update may not trigger so component may not update. That's why reloading fixes it.
+
+**2b.answer**
+Probably the fact that the lodash assign. It's the same problem than in part 1, the assign mutates the existing state instead of having a new reference of that object. On refresh is fixed because the app reloads from the start, the data is reconstructured
+
+**2c.answer**
+One fix could be doing this. It guarantees a new object reference is made. Not really much of a risk, it should depende on some other existing code.
+I'd ship it because it's a low risk, easy to implement and test fix.
+
+    ```javascript
+    case AVAILABLE_THERAPISTS:
+      return {
+        ...state,
+        ...action.payload
+      }
+    ```
+
+Another fix could be forcing the fetch on step change. It's less clean, but could also work.
+I prefer the first approach. It's cleaner.
+
+    ```javascript
+        <ProviderPickStepMarketplace
+            stepId={this.state.currentStepId}
+            assignToCart={this.assignToCart}
+            stepEnteredAt={this.state.stepEnteredAt}
+            toggleNavBarStyle={this.toggleNavBarStyle}
+            changeBackground={this.changeBackground}
+            setBookingFlowStepThroughParent={this.updateBookingStep}
+            displayError={this.displayError}
+            setLoaderFlag={this.setLoaderFlag}
+        />
+
+        this.setState({
+            showLoader: false,
+            currentStepId: step.id,
+            currentStepState: step,
+            stepEnteredAt: Date.now(),
+            showBgFlag: this.showVideoBg(step),
+        }, () => //...
+
+        //in child component
+        componentDidUpdate(previousProps) {
+            if (this.props.stepEnteredAt !== previousProps.stepEnteredAt) {
+                // fetch
+            }
+        }
+    ```
+
+**2d.answer**
+I would not use `key={Date.now()}` to force a remount on every render. It would be too costly, recreating the component constantly, instead of when it's really needed.

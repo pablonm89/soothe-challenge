@@ -32,6 +32,7 @@ A **public GitHub repo** — email us the link when you're done. The repo must c
 You are being evaluated for a role working on a **React 16 web application** for a wellness booking platform. The app allows clients to book in-home massage and spa services through a multi-step booking wizard.
 
 **Tech stack:**
+
 - React 16.3 (class components, no hooks in existing code)
 - Redux 4.0 with `react-redux` `connect()` for state management
 - `redux-persist` 5.10 for persisting selected state to localStorage
@@ -461,6 +462,7 @@ componentDidMount() {
 **2b.** Explain what you believe is the root cause of this bug. Be specific — reference exact code from the snippets above. Explain why the bug manifests only on backward navigation (not on first load), and why a page refresh fixes it.
 
 **2c.** Propose **two different fixes**, each with a different trade-off. For each fix:
+
 - Write the exact code change
 - Explain what it fixes and what risks it introduces
 - State which fix you'd ship to production and why
@@ -578,14 +580,14 @@ export function getTherapistPrivateProfile(therapist_id, callBackFunc, errorHand
 }
 ```
 
-### What to deliver (in the `code/` folder):
+### What to deliver (in the `code/` folder)
 
 1. `RecentlyViewedAction.js` — action type constant(s) and action creator(s)
 2. `RecentlyViewedReducer.js` — the reducer
 3. `RecentlyViewedProviders.js` — the React component (class component, connected to Redux)
 4. `RecentlyViewedProviders.css` — styles for the component
 
-### In your `ANSWERS.md`, also answer:
+### In your `ANSWERS.md`, also answer
 
 **3a.** Where exactly in the existing code would you dispatch the tracking action? Describe the integration point, which file it would be in, and what the calling code would look like. Explain why you chose that specific location over other options.
 
@@ -936,11 +938,11 @@ export function getProducts(queryParam, callBackFunc, errorHandler) {
 4. Every refactored function must now **also return a Promise** so future callers can use `async/await`
 5. Fix any bugs you discover during the refactoring
 
-### What to deliver (in the `code/` folder):
+### What to deliver (in the `code/` folder)
 
 1. `helpers_refactored.js` — the full refactored file
 
-### In your `ANSWERS.md`, also answer:
+### In your `ANSWERS.md`, also answer
 
 **4a.** You'll notice the file has separate "authenticated" and "guest" versions of several functions (e.g., `getAvailableTherapists` and `guestGetAvailableTherapists`). These differ only in URL prefix and headers. Without implementing it, describe how you would consolidate these pairs into single functions. Show a short code sketch of the approach.
 
