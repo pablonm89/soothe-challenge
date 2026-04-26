@@ -285,3 +285,37 @@ Because it may create multiple instances of a cart or payment, or add products t
 It's the same as what was mentioned in part 1. `checkoutBooking` has the `{withCredentials: true}` sent as body. This could cause the checkout to fail
 
 ## Part 5 — Architecture & Opinions (30 min, written only)
+
+**5a.** This codebase uses React 16.3 with class components, Redux with `connect()`, and react-router v4. If you were tasked with planning an incremental modernization over 6 months (no full rewrite), what would you prioritize first, second, and third? For each, explain why it comes in that order, what concrete steps you'd take, and what risk it carries.
+
+- I would not do a full rewrite or hook migration. I'd start with the stabilization (aka fixing existing bugs) in redux, apis, etc. Using helper functions, refactors or normalizing the way the information is accessed. Why first? Api calls and redux states are the core of the application. It's foundamental to have it be as strong as it could be.
+- Then I'd organize all the booking, payments, guest or therapist logic into functions, so it can be reutilized, it's cleanier and easier to maintain. This would be my second call, once all the bugs and weak links are fixed, extracting the logic so it's easier to migrate or refactor to newer components is key.
+- Finally, i'd start by modernizing react incrementally. Why this last? It helps with it being easier to read/follow, but functionality wise, it's not something that's going to really change the code performance. Plus, class and hooks components can coexist, so a slower migration can be done, is not super priority
+
+**5b.** The codebase uses three different styling approaches simultaneously: Bootstrap 3, Material-UI 4, and styled-components. You need to pick **one** as the standard going forward for this specific project. Which do you choose and why? What's your migration strategy — do you convert everything at once, or something else?
+
+- I'd choose `Material UI 4`. `Bootstrap 3` is old and has a lot of global styles, making it harder to maintain. `Styled-components` are flexible, but it's hard for every team member to be aligned and it can lead to the design system to spiral out of control fast.
+- `Material UI` gives the team a structured component library, themes, accessibility and a way to standarize styles.
+
+- I would not convert everything at one, I'd start with freezing the usage of bootstrap, then only using styled components for concrete things or exceptions. Then, any new component or refactor, I'd try to make it so `Material UI` is used. Finally, prioritize high traffic/used components first.
+
+**5c.** The main booking flow component is an ~870-line class component that manages step navigation, API calls, background images, analytics events, B2B logic, guest flow logic, Persona identity verification, and UI rendering all in one file. A junior developer suggests splitting it into smaller components. A senior developer says "it works, splitting it risks introducing bugs." You need to make the call. Who do you side with, and what specifically would you do? Be concrete — what would you extract, what would you leave, and in what order?
+
+- I'd side with the Junior dev. Splitting into smaller components is the right idea, but I wouldnt do it all at once. It's true that it works, so the senior dev is not totally wrong, but maintaining an almost 900 line component is not going to end well. It's really hard to maintain in the long run.
+
+- I'd extract navigation/step logic first, move everything to helper functions.
+- Then, all the API calls and services.
+- Analytics and any other kind of logic/event
+- UI components
+
+**5d.** The Redux persist config uses a blacklist approach (persist everything EXCEPT listed slices). Would you switch to a whitelist approach (persist NOTHING except listed slices)? Argue both sides, then give your recommendation. Describe what could go wrong during the switch and how you'd mitigate it.
+
+Blacklist is convenient. Keeping it like this avoids accidentally logging users out or losing preferences. Plus, the app works like this right now.
+Whitelist is safer and more conventional. You dont need to remember to exclude each new reducer, less risky for sensitive data.
+I'd switch to a Whitelist. I'll do it by parts, also I'll add a persist version so migration is cleaner and old users get new data updated.
+
+**5e.** Describe a time in a past project where you debugged a state management issue in a React application that was difficult to reproduce. What tools or techniques did you use? What turned out to be the root cause? How long did it take, and what did you learn from it?
+
+I had a problem were some users were experiencing problems with their completed meditations (it's from a meditation and wellbeing app), it was hard to reproduce because it did not happen to everyuser and there was no real step to step way of verifying the problem. We save completed meditations in the user redux plus the database. Data showed everything was ok, redux stated were empty.
+
+Turns out, some months ago, some core changed were made to the completed meditations redux model, adding one extra level in the model object. Turns out it only was affecting users that didnt open the app in some time and it was because we didnt have a persist version for our configuration. It took a few days or weeks to really understand the problem, we ended up updating the version control and users stopped having problems.
