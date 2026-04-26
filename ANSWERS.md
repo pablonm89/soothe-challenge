@@ -1,7 +1,8 @@
+**Screen recording:**: <https://drive.google.com/file/d/1tSlZVRRSnQZKReLdwk2TUYsuxY-1t5e8/view?usp=sharing>
+
 # Soothe — Senior Web Developer Take-Home Assessment
 
 **Position:** Senior Web Developer
-**Screen recording:**
 **Star time:** 26/04/2026 14:44 ARG
 **End time:**
 
